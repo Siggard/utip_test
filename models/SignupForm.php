@@ -6,7 +6,7 @@ use yii\base\Model;
 
 class SignupForm extends Model
 {
-    const SCENARIO_REGISTER = 'register';
+    const SCENARIO_REGISTER = 'REG';
 
     public $username;
     public $password;

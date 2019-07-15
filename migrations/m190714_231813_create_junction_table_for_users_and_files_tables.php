@@ -17,9 +17,9 @@ class m190714_231813_create_junction_table_for_users_and_files_tables extends Mi
     public function safeUp()
     {
         $this->createTable('{{%users_files}}', [
-            'users_id' => $this->integer(),
-            'files_id' => $this->integer(),
-            'created_at' => $this->timestamp(),
+            'users_id' => $this->integer()->defaultValue(null),
+            'files_id' => $this->integer()->defaultValue(null),
+            'created_at' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP()',
             'PRIMARY KEY(users_id, files_id)',
         ]);
 

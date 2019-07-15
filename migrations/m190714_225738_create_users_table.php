@@ -21,7 +21,7 @@ class m190714_225738_create_users_table extends Migration
 
         $this->insert('users', [
             'username' => 'admin',
-            'password' => '00a1f187721c63501356bf791e69382c',
+            'password' => '$2y$13$tpJkifJ67rfbbE2sDaO0eOtX5Wu/t//AD9q7EHGKneRpTMx0RFwNS',
         ]);
     }
 

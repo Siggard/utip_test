@@ -2,14 +2,18 @@
 
 namespace app\controllers;
 
+use app\models\FileForm;
 use app\models\SignupForm;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\FileHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\web\UploadedFile;
 
 class SiteController extends Controller
 {
@@ -71,7 +75,39 @@ class SiteController extends Controller
             return $this->redirect(['index']);
         }
 
-        return $this->render('files');
+        return $this->render('files', [
+            'model' => new FileForm()
+        ]);
+    }
+
+    /**
+     * @return array|string
+     * @throws \yii\base\Exception
+     */
+    public function actionUpload()
+    {
+        $model = new FileForm();
+        $model->setScenario(FileForm::SCENARIO_ADD);
+
+        if ($model->upload(UploadedFile::getInstance($model, 'image'))) {
+            return Json::encode([
+                'files' => [
+                    [
+                        'name' => $model->getFilename(),
+                        'size' => $model->getSize(),
+                        'url' => $model->getFilepath(),
+                        'thumbnailUrl' => $model->getFilepath(),
+                        'deleteUrl' => 'image-delete?name=' . $model->getFilename(),
+                        'deleteType' => 'POST',
+                    ],
+                ],
+            ]);
+        }
+
+        return [
+            'success' => false,
+            'errors' => $model->errors
+        ];
     }
 
     /**
