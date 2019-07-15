@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\SignupForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -64,6 +65,15 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    public function actionFiles()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('files');
+    }
+
     /**
      * Login action.
      *
@@ -77,11 +87,29 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect(['files']);
         }
 
-        $model->password = '';
         return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+        $model->scenario = SignupForm::SCENARIO_REGISTER;
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user)) {
+                    Yii::$app->session->setFlash('success', 'Регистрация прошла успешно!');
+                    return $this->redirect(['files']);
+                }
+            }
+        }
+
+        return $this->render('signup', [
             'model' => $model,
         ]);
     }
@@ -114,15 +142,5 @@ class SiteController extends Controller
         return $this->render('contact', [
             'model' => $model,
         ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
     }
 }
