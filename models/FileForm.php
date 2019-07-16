@@ -30,7 +30,7 @@ class FileForm extends Model
     {
         return [
             ['title', 'filter', 'filter' => 'trim'],
-            [['image'], 'file', 'maxSize' => '104857600', 'extensions' => 'gif, jpg, jpeg, bmp, png', 'checkExtensionByMimeType' => false, 'maxFiles' => 10],
+            [['image'], 'file', 'skipOnEmpty' => false, 'maxSize' => '104857600', 'extensions' => 'gif, jpg, jpeg, bmp, png', 'checkExtensionByMimeType' => false, 'maxFiles' => 10],
 //            ['fileId', 'exist', 'targetClass' => File::class, 'targetAttribute' => 'id'],
             [['title', 'descr'], 'string']
         ];
@@ -53,6 +53,11 @@ class FileForm extends Model
      */
     public function upload(UploadedFile $imageFile)
     {
+        $this->image = $imageFile;
+        if (!in_array(mb_strtolower($imageFile->extension), ['gif', 'jpg', 'jpeg', 'bmp', 'png'])) {
+            throw new \Exception('File is not supported');
+        }
+
         $directory = \Yii::getAlias('@files');
         if (!is_dir($directory)) {
             FileHelper::createDirectory($directory);
