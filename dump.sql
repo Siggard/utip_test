@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `files` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
--- Дамп данных таблицы utip.files: ~1 rows (приблизительно)
+-- Дамп данных таблицы utip.files: ~0 rows (приблизительно)
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 
@@ -57,8 +57,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Дамп данных таблицы utip.users: ~2 rows (приблизительно)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `username`, `password`) VALUES
-	(1, 'admin', '$2y$13$tpJkifJ67rfbbE2sDaO0eOtX5Wu/t//AD9q7EHGKneRpTMx0RFwNS'),
-	(2, 'test', '$2y$13$Ehia8ZH32gMBxpzt8tuRbuZGMkCCH64ylHQXTvs/6ItmX1F20HC5G');
+	(1, 'admin', '$2y$13$tpJkifJ67rfbbE2sDaO0eOtX5Wu/t//AD9q7EHGKneRpTMx0RFwNS');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 -- Дамп структуры для таблица utip.users_files
