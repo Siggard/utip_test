@@ -49,11 +49,15 @@ class UserFile extends ActiveRecord
         return $this->hasOne(File::class, ['id' => 'files_id']);
     }
 
-    public static function loadFiles($userId)
+    public static function loadFiles($userId, $like)
     {
         return static::find()
             ->where(['users_id' => $userId])
-            ->with('file')
+            ->joinWith(['file' => function($query) use ($like) {
+                if (!empty($like)) {
+                    $query->where(['like', 'title', $like])->orWhere(['like', 'descr', $like]);
+                }
+            }])
             ->asArray()
             ->all();
     }

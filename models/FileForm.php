@@ -129,13 +129,16 @@ class FileForm extends Model
         }
     }
 
-    public function loadFiles($id)
+    public function loadFiles($id, $like)
     {
         $files = [];
 
-        $records = UserFile::loadFiles($id);
-
+        $records = UserFile::loadFiles($id, $like);
         foreach ($records as $record) {
+            if ($record['file'] === null) {
+                continue;
+            }
+
             $model = new FileForm();
             $model->setScenario(FileForm::SCENARIO_LOAD);
             $model->attributes = array_merge($record['file'], ['fileId' => $record['files_id']]);

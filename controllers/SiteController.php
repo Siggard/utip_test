@@ -109,10 +109,10 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionLoad($id)
+    public function actionLoad($id, $like = '')
     {
         return Json::encode([
-            'files' => (new FileForm)->loadFiles($id)
+            'files' => (new FileForm)->loadFiles($id, $like)
         ]);
     }
 

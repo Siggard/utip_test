@@ -11,9 +11,13 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Files';
 $this->params['breadcrumbs'][] = $this->title;
 
-//$test = new \dosamigos\fileupload\actions\FileListAction();
-//$test->
+$id = 'fileform-image-fileupload';
+$this->registerJsFile(Yii::getAlias('@web') . '/js/script.js', ['position' => \yii\web\View::POS_HEAD] );
+?>
 
+    <?= Html::tag('p', Html::input('test', 'search', null, ['id' => 'search', 'class' => 'form-control', 'onkeyup' => "searchFiles('$id', this.value)"])); ?>
+
+<?
 echo FileUploadUI::widget([
     'model' => $model,
     'attribute' => 'image',
