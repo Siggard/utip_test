@@ -40,5 +40,9 @@ echo FileUploadUI::widget([
                                 console.log(e);
                                 console.log(data);
                             }',
+        'fileuploadsubmit' => 'function (e, data) {
+            var inputs = data.context.find(\':input\');
+            data.formData = inputs.serializeArray();
+        }'
     ],
 ]);

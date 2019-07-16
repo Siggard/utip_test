@@ -57,6 +57,16 @@ $config = [
                 '<action:(.*)>' => 'site/<action>',
             ]
         ],
+        'view'=> [
+            'theme' => [
+                'pathMap' => [
+                    '@vendor/2amigos/yii2-file-upload-widget/src/views' => [
+                        '@app/widgets/fileupload/views', // Override
+                        '@vendor/2amigos/yii2-file-upload-widget/src/views', // Default
+                    ],
+                ],
+            ],
+        ]
     ],
     'params' => $params,
 ];

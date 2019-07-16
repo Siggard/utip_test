@@ -31,7 +31,7 @@ class FileForm extends Model
         return [
             ['title', 'filter', 'filter' => 'trim'],
             [['image'], 'file', 'maxSize' => '104857600', 'extensions' => 'gif, jpg, jpeg, bmp, png', 'checkExtensionByMimeType' => false, 'maxFiles' => 10],
-//            ['id', 'exist', 'targetClass' => File::class, 'targetAttribute' => 'id'],
+//            ['fileId', 'exist', 'targetClass' => File::class, 'targetAttribute' => 'id'],
             [['title', 'descr'], 'string']
         ];
     }
@@ -129,6 +129,11 @@ class FileForm extends Model
         }
     }
 
+    /**
+     * @param $id
+     * @param $like
+     * @return array
+     */
     public function loadFiles($id, $like)
     {
         $files = [];
@@ -139,18 +144,9 @@ class FileForm extends Model
                 continue;
             }
 
-            $model = new FileForm();
-            $model->setScenario(FileForm::SCENARIO_LOAD);
-            $model->attributes = array_merge($record['file'], ['fileId' => $record['files_id']]);
-
-            $files[] = [
-                'name' => $model->getFilename(),
-                'size' => 0,
-                'url' => $model->getFilepath(),
-                'thumbnailUrl' => $model->getThumbFilepath(),
-                'deleteUrl' => 'delete?id=' . $model->getId(),
-                'deleteType' => 'POST',
-            ];
+            $this->setScenario(FileForm::SCENARIO_LOAD);
+            $this->attributes = array_merge($record['file'], ['fileId' => $record['files_id']]);
+            $files[] = $this->getFileData();
         }
 
         return $files;
@@ -194,5 +190,19 @@ class FileForm extends Model
     public function getId()
     {
         return $this->fileId;
+    }
+
+    public function getFileData()
+    {
+        return [
+            'name' => $this->getFilename(),
+            'size' => 0,
+            'url' => $this->getFilepath(),
+            'thumbnailUrl' => $this->getThumbFilepath(),
+            'deleteUrl' => 'delete?id=' . $this->getId(),
+            'deleteType' => 'POST',
+            'title' => $this->title,
+            'descr' => $this->descr
+        ];
     }
 }

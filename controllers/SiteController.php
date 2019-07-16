@@ -87,19 +87,11 @@ class SiteController extends Controller
     {
         $model = new FileForm();
         $model->setScenario(FileForm::SCENARIO_ADD);
+        $model->attributes = Yii::$app->request->post();
 
         if ($model->upload(UploadedFile::getInstance($model, 'image'))) {
             return Json::encode([
-                'files' => [
-                    [
-                        'name' => $model->getFilename(),
-                        'size' => $model->getSize(),
-                        'url' => $model->getFilepath(),
-                        'thumbnailUrl' => $model->getThumbFilepath(),
-                        'deleteUrl' => 'delete?id=' . $model->getId(),
-                        'deleteType' => 'POST',
-                    ],
-                ],
+                'files' => [$model->getFileData()]
             ]);
         }
 
