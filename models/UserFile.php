@@ -35,4 +35,26 @@ class UserFile extends ActiveRecord
             ->andWhere(['users_id' => \Yii::$app->user->id])
             ->one();
     }
+
+    public static function findUserFileById($fileId)
+    {
+        return static::findOne([
+            'files_id' => $fileId,
+            'users_id' => \Yii::$app->user->id
+        ]);
+    }
+
+    public function getFile()
+    {
+        return $this->hasOne(File::class, ['id' => 'files_id']);
+    }
+
+    public static function loadFiles($userId)
+    {
+        return static::find()
+            ->where(['users_id' => $userId])
+            ->with('file')
+            ->asArray()
+            ->all();
+    }
 }

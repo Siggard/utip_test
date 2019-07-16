@@ -6,7 +6,6 @@ use app\models\FileForm;
 use app\models\SignupForm;
 use Yii;
 use yii\filters\AccessControl;
-use yii\helpers\FileHelper;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\Response;
@@ -96,8 +95,8 @@ class SiteController extends Controller
                         'name' => $model->getFilename(),
                         'size' => $model->getSize(),
                         'url' => $model->getFilepath(),
-                        'thumbnailUrl' => $model->getFilepath(),
-                        'deleteUrl' => 'image-delete?name=' . $model->getFilename(),
+                        'thumbnailUrl' => $model->getThumbFilepath(),
+                        'deleteUrl' => 'delete?id=' . $model->getId(),
                         'deleteType' => 'POST',
                     ],
                 ],
@@ -108,6 +107,29 @@ class SiteController extends Controller
             'success' => false,
             'errors' => $model->errors
         ];
+    }
+
+    public function actionLoad($id)
+    {
+        return Json::encode([
+            'files' => (new FileForm)->loadFiles($id)
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return string
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionDelete($id)
+    {
+        $model = new FileForm();
+        $model->setScenario(FileForm::SCENARIO_DEL);
+        $model->attributes = ['fileId' => $id];
+        $model->delete();
+
+        return $this->actionLoad(\Yii::$app->user->id);
     }
 
     /**

@@ -52,6 +52,8 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '' => 'site/index',
+                'GET upload' => 'site/load',
+                'POST upload' => 'site/upload',
                 '<action:(.*)>' => 'site/<action>',
             ]
         ],

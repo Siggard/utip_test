@@ -11,12 +11,15 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Files';
 $this->params['breadcrumbs'][] = $this->title;
 
+//$test = new \dosamigos\fileupload\actions\FileListAction();
+//$test->
 
 echo FileUploadUI::widget([
     'model' => $model,
     'attribute' => 'image',
-    'url' => ['site/upload', 'id' => $tour_id],
+    'url' => ['site/upload', 'id' => \Yii::$app->user->id],
     'gallery' => false,
+    'load' => true,
     'fieldOptions' => [
         'accept' => 'image/*'
     ],
